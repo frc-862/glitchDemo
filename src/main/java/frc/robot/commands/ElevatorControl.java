@@ -4,14 +4,16 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator;
 
 public class ElevatorControl extends CommandBase {
-    double power;
+    private final DoubleSupplier power;
     Elevator elevator;
     /** Creates a new ElevatorControl. */
-    public ElevatorControl(Elevator elevator, double power) {
+    public ElevatorControl(Elevator elevator, DoubleSupplier power) {
         addRequirements(elevator);
         this.elevator = elevator;
         this.power = power;
@@ -20,7 +22,7 @@ public class ElevatorControl extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        elevator.setPower(power);
+        elevator.setPower(power.getAsDouble());
     }
 
     // Called every time the scheduler runs while the command is scheduled.

@@ -35,20 +35,20 @@ public class RobotContainer {
     private static final Joystick driverLeft = new Joystick(0);
     private static final Joystick driverRight = new Joystick(1);
 
-    private static final Joystick operator = new Joystick(2);
+    public final Joystick operator = new Joystick(2);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         // Configure the button bindings
         configureButtonBindings();
         //Standard Tank Drive Controls
-        drivetrain.setDefaultCommand(new TankDrive(drivetrain, driverLeft.getY(), driverRight.getY()));
+        drivetrain.setDefaultCommand(new TankDrive(drivetrain, () -> driverLeft.getY(), () -> driverRight.getY()));
 
         //Left Stick to move elevator
-        elevator.setDefaultCommand(new ElevatorControl(elevator, operator.getY(Hand.kLeft)));
+        elevator.setDefaultCommand(new ElevatorControl(elevator, () -> operator.getY(Hand.kLeft)));
 
         //Right Stick to move elevator
-        fourBar.setDefaultCommand(new FourBarControl(fourBar, operator.getY(Hand.kRight)));
+        fourBar.setDefaultCommand(new FourBarControl(fourBar, () ->  operator.getY(Hand.kRight)));
     }
 
     /**
