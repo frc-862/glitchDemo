@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -21,15 +17,22 @@ public class Drivetrain extends SubsystemBase {
     final VictorSPX right2 = new VictorSPX(5);
     final VictorSPX right3 = new VictorSPX(6);
 
-    /** Creates a new DriveTrain. */
     public Drivetrain() {
-        left1.setInverted(false);
-        left2.setInverted(true);
-        left3.setInverted(false);
+        left1.configFactoryDefault();
+        left2.configFactoryDefault();
+        left3.configFactoryDefault();
 
-        right1.setInverted(true);
-        right2.setInverted(false);
-        right3.setInverted(true);
+        right1.configFactoryDefault();
+        right2.configFactoryDefault();
+        right3.configFactoryDefault();
+
+        left1.setInverted(true);
+        left2.setInverted(false);
+        left3.setInverted(true);
+
+        right1.setInverted(false);
+        right2.setInverted(true);
+        right3.setInverted(false);
 
         left2.follow(left1);
         left3.follow(left1);
@@ -37,6 +40,7 @@ public class Drivetrain extends SubsystemBase {
         right2.follow(right1);
         right3.follow(right1);
 
+        //coast mode to ease tipping when we stop
         left1.setNeutralMode(NeutralMode.Coast);
         left2.setNeutralMode(NeutralMode.Coast);
         left3.setNeutralMode(NeutralMode.Coast);
@@ -46,14 +50,10 @@ public class Drivetrain extends SubsystemBase {
         right3.setNeutralMode(NeutralMode.Coast);
     }
 
-    public void periodic() {}
-
     public void setPower(double left, double right) {
         left1.set(ControlMode.PercentOutput, left);
         right1.set(ControlMode.PercentOutput, right);
     }
 
-    public void stop(){
-        setPower(0, 0);
-    }
+    public void stop(){ setPower(0, 0); }
 }

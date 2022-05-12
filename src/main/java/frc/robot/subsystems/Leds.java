@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AddressableLED;
@@ -9,16 +5,14 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Leds extends SubsystemBase {
-    final int ledLength = 123; //TODO: get actual length
+    final int LED_LENGTH = 123; //TODO: get actual length
     final AddressableLED ledStrip = new AddressableLED(1);
-    final AddressableLEDBuffer buffer = new AddressableLEDBuffer(ledLength);
+    final AddressableLEDBuffer buffer = new AddressableLEDBuffer(LED_LENGTH);
 
     public Leds() {
         ledStrip.start();
-        ledStrip.setLength(ledLength);
+        ledStrip.setLength(LED_LENGTH);
     }
-
-    public void periodic() {}
 
     public void writeBuffer() {
         ledStrip.setData(buffer);
@@ -33,29 +27,31 @@ public class Leds extends SubsystemBase {
     }
 
     public void setRGB(int[] rgb) {
-        setRGB(rgb, ledLength);
+        setRGB(rgb, LED_LENGTH);
     }
 
     public void setGradient(int[] startRgb, int[] endRgb, int length, boolean show, int offset) {
         int i,r,g,b;
         for (i=offset; i<length; i++) {
+            //this formula for gradients that i wrote is super cool
+            //I have no memory of how it works but it looks pretty smart so im just gonna leave it
             r = (int) (((endRgb[0]-startRgb[0])*(i/length))+startRgb[0]);
             g = (int) (((endRgb[1]-startRgb[1])*(i/length))+startRgb[1]);
             b = (int) (((endRgb[2]-startRgb[2])*(i/length))+startRgb[2]);
             buffer.setRGB(i, r, g, b);
         }
         if (show) {
-            ledStrip.setData(buffer);
+            writeBuffer();
         }
     }
 
     public void setGradient(int[] startRgb, int[] endRgb) {
-        setGradient(startRgb, endRgb, ledLength, false, 0);
+        setGradient(startRgb, endRgb, LED_LENGTH, false, 0);
     }
 
     public void doubleGradient(int[] startingRgb, int[] middleRgb, int[] endingRgb) {
-        setGradient(startingRgb, middleRgb, Math.round(ledLength/2), false, 0);
-        setGradient(middleRgb, endingRgb, Math.round(ledLength-(ledLength/2)), true, Math.round(ledLength/2));
+        setGradient(startingRgb, middleRgb, Math.round(LED_LENGTH/2), false, 0);
+        setGradient(middleRgb, endingRgb, Math.round(LED_LENGTH-(LED_LENGTH/2)), true, Math.round(LED_LENGTH/2));
     }
 
     //Premade effects:

@@ -4,39 +4,38 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Grippers;
 
 public class GripperControl extends CommandBase {
-    double power;
+    DoubleSupplier collectPower;
+    DoubleSupplier ejectPower;
     Grippers grippers;
-    /** Creates a new ElevatorControl. */
-    public GripperControl(Grippers grippers, double power) {
+
+    public GripperControl(Grippers grippers, DoubleSupplier collectPower, DoubleSupplier ejectPower) {
         addRequirements(grippers);
         this.grippers = grippers;
-        this.power = power;
+        this.collectPower = collectPower;
+        this.ejectPower = ejectPower;
     }
 
-    // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        grippers.setPower(power);
+        grippers.setPower(collectPower.getAsDouble() - ejectPower.getAsDouble());
     }
 
-    // Called every time the scheduler runs while the command is scheduled.
     @Override
-    public void execute() {}
+    public void execute() {
+        grippers.setPower(collectPower.getAsDouble() - ejectPower.getAsDouble());
+    }
 
-    // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
         grippers.stop();
     }
 
-    // Returns true when the command should end.
     @Override
-    public boolean isFinished() {
-        return false;
-    }
+    public boolean isFinished() { return false; }
 }
