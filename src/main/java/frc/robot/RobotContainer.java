@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.ElevatorControl;
 import frc.robot.commands.FourBarControl;
 import frc.robot.commands.GripperControl;
+import frc.robot.constants.Constants;
+import frc.robot.constants.JoystickConstants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.FourBar;
@@ -22,12 +24,17 @@ public class RobotContainer extends LightningContainer {
     private static final FourBar fourBar = new FourBar();
     private static final Grippers grippers = new Grippers();
 
-    private static final Joystick driverLeft = new Joystick(0);
-    private static final Joystick driverRight = new Joystick(1);
+    private static final Joystick driverLeft = new Joystick(JoystickConstants.DRIVER_LEFT_PORT);
+    private static final Joystick driverRight = new Joystick(JoystickConstants.DRIVER_RIGHT_PORT);
 
-    public final XboxController operator = new XboxController(2);
+    public final XboxController operator = new XboxController(JoystickConstants.COPILOT_PORT);
 
-    private JoystickFilter filter = new JoystickFilter(0.13, 0.1, 1, JoystickFilter.Mode.CUBED);
+    private JoystickFilter mechFilter = new JoystickFilter(
+        Constants.CODRIVER_DEADBAND,
+        0.1,
+        1,
+        JoystickFilter.Mode.CUBED
+    );
 
     public RobotContainer() {
         configureButtonBindings();
@@ -48,10 +55,10 @@ public class RobotContainer extends LightningContainer {
         drivetrain.setDefaultCommand(new DifferentialTankDrive(drivetrain, () -> -driverLeft.getY() , () -> -driverRight.getY()));
 
         //Left Stick to move elevator
-        elevator.setDefaultCommand(new ElevatorControl(elevator, () -> filter.filter(operator.getLeftY())));
+        elevator.setDefaultCommand(new ElevatorControl(elevator, () -> mechFilter.filter(-operator.getLeftY())));
 
         //Right Stick to move elevator
-        fourBar.setDefaultCommand(new FourBarControl(fourBar, () ->  filter.filter(operator.getRightY())));
+        fourBar.setDefaultCommand(new FourBarControl(fourBar, () ->  mechFilter.filter(-operator.getRightY())));
 
         //RT/LT to collect/eject
         grippers.setDefaultCommand(new GripperControl(grippers, () -> operator.getRightTriggerAxis(), () -> operator.getLeftTriggerAxis()));
@@ -67,7 +74,7 @@ public class RobotContainer extends LightningContainer {
     protected void configureSystemTests() {}
 
     @Override
-    public LightningDrivetrain getDrivetrain() { return null; }
+    public LightningDrivetrain getDrivetrain() { return drivetrain; }
 
     @Override
     protected void initializeDashboardCommands() {}

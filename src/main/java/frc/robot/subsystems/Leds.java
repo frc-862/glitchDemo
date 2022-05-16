@@ -3,10 +3,12 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.Constants;
+import frc.robot.constants.RobotMap;
 
 public class Leds extends SubsystemBase {
-    final int LED_LENGTH = 123; //TODO: get actual length
-    final AddressableLED ledStrip = new AddressableLED(1);
+    final int LED_LENGTH = Constants.LED_LENGTH;
+    final AddressableLED ledStrip = new AddressableLED(RobotMap.LEDS);
     final AddressableLEDBuffer buffer = new AddressableLEDBuffer(LED_LENGTH);
 
     public Leds() {
@@ -56,10 +58,8 @@ public class Leds extends SubsystemBase {
 
     //Premade effects:
     public void orangeAndBlue() {
-        //lightning robotics orange is ff9900 (255, 153, 0)
         int[] blue = {0, 0, 255};
-        int[] orange = {255, 153, 0};
-        doubleGradient(blue, orange, blue);
+        doubleGradient(blue, Constants.LR_ORANGE, blue);
     }
 
     public void stop() {

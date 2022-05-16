@@ -4,39 +4,29 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-import com.lightningrobotics.common.controller.FeedForwardController;
-import com.lightningrobotics.common.controller.PIDFController;
 import com.lightningrobotics.common.subsystem.core.LightningIMU;
 import com.lightningrobotics.common.subsystem.drivetrain.differential.DifferentialDrivetrain;
-import com.lightningrobotics.common.subsystem.drivetrain.differential.DifferentialGains;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import frc.robot.constants.Constants;
+import frc.robot.constants.RobotMap;
 
 public class Drivetrain extends DifferentialDrivetrain {
 
     private static final MotorController[] LEFT_MOTORS = new MotorController[]{
-        new WPI_TalonSRX(1),
-        new WPI_VictorSPX(2),
-        new WPI_VictorSPX(3)
+        new WPI_TalonSRX(RobotMap.LEFT_1),
+        new WPI_VictorSPX(RobotMap.LEFT_2),
+        new WPI_VictorSPX(RobotMap.LEFT_3)
     };
-
     private static final MotorController[] RIGHT_MOTORS = new MotorController[]{
-        new WPI_TalonSRX(4),
-        new WPI_VictorSPX(5),
-        new WPI_VictorSPX(6)
+        new WPI_TalonSRX(RobotMap.RIGHT_1),
+        new WPI_VictorSPX(RobotMap.RIGHT_2),
+        new WPI_VictorSPX(RobotMap.RIGHT_3)
     };
-
-    private static final DifferentialGains GAINS = new DifferentialGains(
-        0, 0, 0, 
-        new boolean[]{false, true, false}, 
-        new boolean[]{true, false, true}, 
-        new PIDFController(0, 0, 0),
-        new FeedForwardController(0, 0)
-    );
 
     public Drivetrain() {
         super(
-            GAINS,
+            Constants.GAINS,
             LEFT_MOTORS, 
             RIGHT_MOTORS,
             LightningIMU.none(), 
@@ -49,7 +39,7 @@ public class Drivetrain extends DifferentialDrivetrain {
         withEachMotor(m -> ((BaseMotorController) m).configFactoryDefault());
 
         //coast mode to ease tipping when we stop
-        setNeutralMode(NeutralMode.Coast);
+        setNeutralMode(Constants.DRIVE_NEUTRAL);
     }
 
     public void setNeutralMode(NeutralMode neutralMode) {

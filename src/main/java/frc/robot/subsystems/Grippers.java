@@ -4,15 +4,23 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.Constants;
+import frc.robot.constants.RobotMap;
 
 public class Grippers extends SubsystemBase {
-    final VictorSPX gripperMotorRight = new VictorSPX(20);
-    final VictorSPX gripperMotorLeft = new VictorSPX(21);
+    final VictorSPX gripperMotorRight = new VictorSPX(RobotMap.GRIPPER_RIGHT);
+    final VictorSPX gripperMotorLeft = new VictorSPX(RobotMap.GRIPPER_LEFT);
 
     public Grippers() {
+        //Reset configs to default to avoid some weirdness
         gripperMotorLeft.configFactoryDefault();
         gripperMotorRight.configFactoryDefault();
-        gripperMotorRight.setInverted(true);
+        //set neutral modes
+        gripperMotorLeft.setNeutralMode(Constants.GRIPPER_LEFT_NEUTRAL);
+        gripperMotorRight.setNeutralMode(Constants.GRIPPER_RIGHT_NEUTRAL);
+        //set inverts
+        gripperMotorLeft.setInverted(Constants.GRIPPER_LEFT_INVERT);
+        gripperMotorRight.setInverted(Constants.GRIPPER_RIGHT_INVERT);
         gripperMotorLeft.follow(gripperMotorRight);
     }
 
