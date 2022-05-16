@@ -16,11 +16,6 @@ public class FourBarControl extends CommandBase {
     }
 
     @Override
-    public void initialize() {
-        fourBar.setPower(power.getAsDouble());
-    }
-
-    @Override
     public void execute() {
         fourBar.setPower(power.getAsDouble());
     }
@@ -30,7 +25,4 @@ public class FourBarControl extends CommandBase {
         super.end(interrupted);
         fourBar.stop();
     }
-
-    @Override
-    public boolean isFinished() { return false; }
 }

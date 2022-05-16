@@ -16,11 +16,6 @@ public class ElevatorControl extends CommandBase {
     }
 
     @Override
-    public void initialize() {
-        elevator.setPower(power.getAsDouble());
-    }
-
-    @Override
     public void execute() {
         elevator.setPower(power.getAsDouble());
     }
@@ -30,7 +25,4 @@ public class ElevatorControl extends CommandBase {
         super.end(interrupted);
         elevator.stop();
     }
-
-    @Override
-    public boolean isFinished() { return false; }
 }

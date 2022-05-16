@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
@@ -21,11 +17,6 @@ public class GripperControl extends CommandBase {
     }
 
     @Override
-    public void initialize() {
-        grippers.setPower(collectPower.getAsDouble() - ejectPower.getAsDouble());
-    }
-
-    @Override
     public void execute() {
         grippers.setPower(collectPower.getAsDouble() - ejectPower.getAsDouble());
     }
@@ -35,7 +26,4 @@ public class GripperControl extends CommandBase {
         super.end(interrupted);
         grippers.stop();
     }
-
-    @Override
-    public boolean isFinished() { return false; }
 }
