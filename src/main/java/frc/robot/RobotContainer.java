@@ -1,8 +1,6 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
+
+import com.lightningrobotics.common.util.filter.JoystickFilter;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -27,16 +25,18 @@ public class RobotContainer {
 
     public final XboxController operator = new XboxController(2);
 
+    private JoystickFilter filter = new JoystickFilter(0.13, 0.1, 1, JoystickFilter.Mode.CUBED);
+
     public RobotContainer() {
         configureButtonBindings();
         //Standard Tank Drive Controls
         drivetrain.setDefaultCommand(new TankDrive(drivetrain, () -> driverLeft.getY(), () -> driverRight.getY()));
 
         //Left Stick to move elevator
-        elevator.setDefaultCommand(new ElevatorControl(elevator, () -> operator.getLeftY()));
+        elevator.setDefaultCommand(new ElevatorControl(elevator, () -> filter.filter(operator.getLeftY())));
 
         //Right Stick to move elevator
-        fourBar.setDefaultCommand(new FourBarControl(fourBar, () ->  operator.getRightY()));
+        fourBar.setDefaultCommand(new FourBarControl(fourBar, () ->  filter.filter(operator.getRightY())));
 
         //RT/LT to collect/eject
         grippers.setDefaultCommand(new GripperControl(grippers, () -> operator.getRightTriggerAxis(), () -> operator.getLeftTriggerAxis()));

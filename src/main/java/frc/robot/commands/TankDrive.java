@@ -2,6 +2,8 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import com.lightningrobotics.common.util.filter.JoystickFilter;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
@@ -10,21 +12,29 @@ public class TankDrive extends CommandBase {
     private final DoubleSupplier left;
     private final DoubleSupplier right;
 
-    public TankDrive(Drivetrain drivetrain, DoubleSupplier left, DoubleSupplier right) {
-        addRequirements(drivetrain);
+    private JoystickFilter filter = new JoystickFilter(0.15, 0.1, 1, JoystickFilter.Mode.CUBED);
+
+    public TankDrive(Drivetrain drivetrain, DoubleSupplier left, DoubleSupplier right, JoystickFilter filter) {
         this.drivetrain = drivetrain;
         this.left = left;
         this.right = right;
+        addRequirements(drivetrain);
+        this.filter = filter;
     }
 
-    @Override
-    public void initialize() {
-        drivetrain.setPower(left.getAsDouble(), right.getAsDouble());
+    public TankDrive(Drivetrain drivetrain, DoubleSupplier left, DoubleSupplier right) {
+        this.drivetrain = drivetrain;
+        this.left = left;
+        this.right = right;
+        addRequirements(drivetrain);
     }
 
     @Override
     public void execute() {
-        drivetrain.setPower(left.getAsDouble(), right.getAsDouble());
+        double leftPwr = filter.filter(left.getAsDouble());
+        double rightPwr = filter.filter(right.getAsDouble());
+
+        drivetrain.setPower(leftPwr, rightPwr);
     }
 
     @Override
@@ -32,7 +42,4 @@ public class TankDrive extends CommandBase {
         super.end(interrupted);
         drivetrain.stop();
     }
-
-    @Override
-    public boolean isFinished() { return false; }
 }
