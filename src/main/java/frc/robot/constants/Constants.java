@@ -15,14 +15,14 @@ public final class Constants {
     public static final double TRACK_WIDTH = 0d;
 
     //Drivetrainf pid values
-    public static final double DRIVE_KP = 0d;
-    public static final double DRIVE_KI = 0d;
-    public static final double DRIVE_KD = 0d;
-    public static final double DRIVE_KF = 0d;
+    public static final double DRIVE_KP = 0.1d;
+    public static final double DRIVE_KI = 0.1d;
+    public static final double DRIVE_KD = 0.1d;
+    public static final double DRIVE_KF = 0.1d;
 
     //drivetrain ff values
-    public static final double DRIVE_KS = 0d;
-    public static final double DRIVE_KV = 0d;
+    public static final double DRIVE_KS = 0.1d;
+    public static final double DRIVE_KV = 0.1d;
 
     public static final DifferentialGains GAINS = new DifferentialGains(
         MAX_SPEED, MAX_ACCEL, TRACK_WIDTH,
