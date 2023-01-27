@@ -45,4 +45,15 @@ public class Elevator extends SubsystemBase {
     }
 
     public void stop() { setPower(0); }
+
+    @Override
+    public void periodic() {
+        if (getRawPosition() < 0 | elevatorMotor.isRevLimitSwitchClosed() == 1) {
+            elevatorMotor.setSelectedSensorPosition(0);
+        }
+
+        if (getHeight() > ElevatorConstants.MAX_HEIGHT) {
+            elevatorMotor.setSelectedSensorPosition(ElevatorConstants.MAX_HEIGHT / Math.PI / ElevatorConstants.SPROCKET_DIAMETER * ElevatorConstants.ENCODER_TICKS_PER_REV);
+        }
+    }
 }
