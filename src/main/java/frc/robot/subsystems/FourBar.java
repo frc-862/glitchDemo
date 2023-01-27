@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RobotMap;
 import frc.robot.Constants;
@@ -34,11 +35,11 @@ public class FourBar extends SubsystemBase {
     }
 
     public double getAngle() {
-        return getRawPosition() / FourBarConstants.ENCODER_TICKS_PER_REV * 360;
+        return (getRawPosition()+FourBarConstants.ENCODER_OFFSET) / FourBarConstants.ENCODER_TICKS_PER_REV * 360;
     }
 
-    public void setAngle(double angle) {
-        fourBarMotor.set(ControlMode.Position, angle / 360 * FourBarConstants.ENCODER_TICKS_PER_REV);
+    public void setAngle(Rotation2d angle) {
+        fourBarMotor.set(ControlMode.Position, angle.getRotations() * FourBarConstants.ENCODER_TICKS_PER_REV);
     }
 
     public boolean onTarget() {

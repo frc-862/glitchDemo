@@ -66,6 +66,7 @@ public final class Constants {
         //Uses a US Digital MA3 Encoder
         public final static int ENCODER_TICKS_PER_REV = 4096;
         public final static FeedbackDevice FEEDBACK_DEVICE = FeedbackDevice.Analog;
+        public final static int ENCODER_OFFSET = 0; //TODO: find encoder offset
         //no gear ratio since encoder is on the output shaft
 
         public final static double P = 0.1; //TODO: tune
