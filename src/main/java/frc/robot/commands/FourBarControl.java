@@ -22,7 +22,6 @@ public class FourBarControl extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        super.end(interrupted);
         fourBar.stop();
     }
 }

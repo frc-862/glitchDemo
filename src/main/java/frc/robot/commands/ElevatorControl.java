@@ -22,7 +22,6 @@ public class ElevatorControl extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        super.end(interrupted);
         elevator.stop();
     }
 }

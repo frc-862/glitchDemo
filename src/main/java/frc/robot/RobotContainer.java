@@ -4,22 +4,21 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.ElevatorControl;
 import frc.robot.commands.FourBarControl;
-import frc.robot.commands.GripperControl;
+import frc.robot.commands.IntakeControl;
 import frc.robot.commands.TankDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.FourBar;
-import frc.robot.subsystems.Grippers;
+import frc.robot.subsystems.Intake;
 
 public class RobotContainer {
     private static final Drivetrain drivetrain = new Drivetrain();
     private static final Elevator elevator = new Elevator();
     private static final FourBar fourBar = new FourBar();
-    private static final Grippers grippers = new Grippers();
+    private static final Intake intake = new Intake();
 
-    private static final XboxController driver = new XboxController(0);
-
-    public final XboxController operator = new XboxController(1);
+    private static final XboxController driver  = new XboxController(0);
+    public static final XboxController operator = new XboxController(1);
 
     public RobotContainer() {
         configureButtonBindings();
@@ -29,11 +28,11 @@ public class RobotContainer {
         //Left Stick to move elevator
         elevator.setDefaultCommand(new ElevatorControl(elevator, () -> operator.getLeftY()));
 
-        //Right Stick to move elevator
+        //Right Stick to move fourbar
         fourBar.setDefaultCommand(new FourBarControl(fourBar, () ->  operator.getRightY()));
 
         //RT/LT to collect/eject
-        grippers.setDefaultCommand(new GripperControl(grippers, () -> operator.getRightTriggerAxis(), () -> operator.getLeftTriggerAxis()));
+        intake.setDefaultCommand(new IntakeControl(intake, () -> operator.getRightTriggerAxis(), () -> operator.getLeftTriggerAxis()));
     }
 
     private void configureButtonBindings() {}
